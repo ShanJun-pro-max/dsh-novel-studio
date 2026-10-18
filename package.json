@@ -37,7 +37,8 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "*",
-    "@deepseek-ai/schemastery": "*"
+    "@deepseek-ai/schemastery": "*",
+    "@deepseek-ai/dsh-llm": "*"
   },
   "peerDependenciesMeta": {
     "@deepseek-ai/dsh-llm": {
