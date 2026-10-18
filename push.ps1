@@ -1,4 +1,4 @@
-# push.ps1 — 提交改动并推送到 GitHub
+﻿# push.ps1 — 提交改动并推送到 GitHub
 #
 # 用法：
 #   .\push.ps1                      # 用时间做提交信息
@@ -41,7 +41,16 @@ if (-not $status) {
 }
 
 git commit -m $msg
+if ($LASTEXITCODE -ne 0) {
+  Write-Error "提交失败，已中止推送"
+  exit 1
+}
+
 git push
+if ($LASTEXITCODE -ne 0) {
+  Write-Error "推送失败（检查网络或登录状态）"
+  exit 1
+}
 
 Write-Host ""
 Write-Host "已推送：$msg" -ForegroundColor Green

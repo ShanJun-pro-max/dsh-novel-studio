@@ -40,6 +40,38 @@ dsh plugin add file:/path/to/dsh-novel-studio
 
 装完**重启 dsh web**，侧栏底部出现「📚 小说工坊」。
 
+**怎么知道装成功了**：打开工作台，看左侧导航最底部有没有版本号（当前 `v2.5.0`）。
+
+---
+
+## 更新
+
+```bash
+# 1. 重新装一次，会拉最新代码
+dsh plugin add github:ShanJun-pro-max/dsh-novel-studio
+
+# 2. 重启 dsh web
+```
+
+开工作台看左下角版本号有没有变。
+
+**版本号没变？** 说明命中了旧的依赖缓存。删掉再装：
+
+```bash
+# Windows
+rmdir /s /q "%USERPROFILE%\.dsh\profiles\web\node_modules\dsh-novel-studio"
+dsh plugin add github:ShanJun-pro-max/dsh-novel-studio
+```
+
+从源码装的（`file:` 方式）更新更简单：
+
+```bash
+cd /path/to/dsh-novel-studio
+git pull
+```
+
+然后重启 dsh web。
+
 ---
 
 ## 快速开始

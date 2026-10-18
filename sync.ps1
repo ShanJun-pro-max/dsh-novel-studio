@@ -1,4 +1,4 @@
-# sync.ps1 — 把本仓库的代码同步到 dsh profile 的安装位置
+﻿# sync.ps1 — 把本仓库的代码同步到 dsh profile 的安装位置
 #
 # 为什么需要这个：
 # 你的仓库在 D:\18708\Documents\dsh-novel-studio（可以 git push、不怕被清）
