@@ -1,0 +1,7 @@
+# dsh-novel-studio bundle patch layer.
+# 安装时作为一层应用：把插件行插进 web profile 的组合配置。
+# 插件提供：一页式小说创作工作台（侧栏入口），
+# 状态落在 <作品>/.dsh-novel-craft/ 下，偏好档案按「类型」跨书复用。
+- insert:
+    - id: dsh-novel-studio
+      name: 'dsh-novel-studio'
