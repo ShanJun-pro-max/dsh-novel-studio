@@ -50,6 +50,9 @@ if ($LASTEXITCODE -ne 0) { Write-Error "改完 client.js 语法有问题，请�
 Write-Host "package.json : $oldPkgVersion → $NewVersion"
 Write-Host "lib/client.js: v$oldClientVersion → v$NewVersion"
 Write-Host ""
+Write-Host ""
+Write-Host "别忘了在 CHANGELOG.md 里记一条这次改了什么。" -ForegroundColor Yellow
+Write-Host ""
 Write-Host "改好了。下一步：" -ForegroundColor Green
 Write-Host "  .\push.ps1 发布 v$NewVersion"
 Write-Host "  .\sync.ps1"

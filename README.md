@@ -271,6 +271,12 @@ lib/
 
 ---
 
+## 更新日志
+
+每个版本改了什么，见 [CHANGELOG.md](./CHANGELOG.md)。
+
+---
+
 ## License
 
 MIT
