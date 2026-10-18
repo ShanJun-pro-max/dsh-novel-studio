@@ -48,8 +48,29 @@ if ($LASTEXITCODE -ne 0) {
 
 git push
 if ($LASTEXITCODE -ne 0) {
-  Write-Error "推送失败（检查网络或登录状态）"
-  exit 1
+  # 国内直连 github.com 常常不通，但系统代理可能开着而 git 不知道。
+  # 这里自动找本地代理端口重试一次，不改 git 配置。
+  Write-Host ""
+  Write-Host "直连推送失败，尝试通过本地代理重试…" -ForegroundColor Yellow
+  $retried = $false
+  foreach ($port in @(7890, 7891, 1080, 10809, 8080)) {
+    $listening = Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue
+    if (-not $listening) { continue }
+    Write-Host "  发现本地代理 $port，试用…"
+    git -c "http.proxy=http://127.0.0.1:$port" -c "https.proxy=http://127.0.0.1:$port" push
+    if ($LASTEXITCODE -eq 0) {
+      $retried = $true
+      Write-Host ""
+      Write-Host "通过代理 $port 推送成功。想以后都走代理，执行：" -ForegroundColor Green
+      Write-Host "  git config http.proxy http://127.0.0.1:$port"
+      Write-Host "  git config https.proxy http://127.0.0.1:$port"
+      break
+    }
+  }
+  if (-not $retried) {
+    Write-Error "推送失败：没找到可用代理，或代理也不通。检查网络、代理软件是否在跑，或 GitHub 登录状态。"
+    exit 1
+  }
 }
 
 Write-Host ""
