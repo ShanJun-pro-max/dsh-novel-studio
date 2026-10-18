@@ -29,7 +29,7 @@
 ## 安装
 
 ```bash
-dsh plugin add github:USERNAME/dsh-novel-studio
+dsh plugin add github:ShanJun-pro-max/dsh-novel-studio
 ```
 
 或者本地开发：
