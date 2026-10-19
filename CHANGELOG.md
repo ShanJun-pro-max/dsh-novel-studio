@@ -14,29 +14,26 @@
 
 ### 改名
 
-**包名 dsh-novel-studio → dsh-novel-workbench**
+**包名与仓库名统一为 `dsh-novel-workbench`**
 
-原因很实在：`dsh-novel-studio` 这个包名在 npm 上**已经被别人占了**（维护者 winterchenhuan，v0.3.0，2026-08-22 发布的一个「创作台」插件）。不光是发不了 npm——更麻烦的是：有人照着旧名字敲 `dsh plugin add dsh-novel-studio`，装上来的是**别人的插件**。
+起因：`dsh-novel-studio` 这个包名在 npm 上**已经被别人占了**（维护者 winterchenhuan，v0.3.0，2026-08-22 发布的一个「创作台」插件）。不光发不了 npm——更麻烦的是有人照旧名字敲 `dsh plugin add dsh-novel-studio`，装上来的是**别人的插件**。
 
-改的是**包名**，不是仓库名（GitHub 仓库还叫 dsh-novel-studio），所以：
-
-| 变 | 不变 |
+| 改了 | 没改 |
 | --- | --- |
-| `package.json` 的 `name` | GitHub 仓库地址 |
-| `cordis.patch.yml` 里的 id / name | 作品里的数据目录 `.dsh-novel-studio/`（改了旧稿、指令、归属表全断） |
-| `install.mjs` 写进 `dsh.profile.bundles` 的名字 | 侧栏入口、界面、所有功能 |
-| `lib/index.js` 导出的 `name`（配置键） |  |
-| 安装目录 `node_modules/dsh-novel-workbench` |  |
+| 包名：`dsh-novel-workbench` | 作品里的数据目录 `.dsh-novel-studio/`（改了旧稿、指令、归属表全断） |
+| GitHub 仓库名：`ShanJun-pro-max/dsh-novel-workbench`（旧地址 301 跳转） | 侧栏入口、界面、所有功能 |
+| `cordis.patch.yml` / `lib/index.js` / `install.mjs` 里的插件名 | 指令、候选稿、回收站的数据格式 |
+| 安装目录 `node_modules/dsh-novel-workbench` | |
 
 ### 已经装过的人要做的（一次性）
 
 ```bash
 dsh plugin --profile web remove dsh-novel-studio
-dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
+dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-workbench
 node ./node_modules/dsh-novel-workbench/install.mjs web
 ```
 
-然后重启 dsh web。**作品目录里的东西一样不动**（候选稿、标注、指令、回收站都在 `.dsh-novel-studio/` 下）；但插件名变了，配置键也变了，工作台里要重新选一次作品目录。
+然后重启 dsh web。**作品目录里的东西一样不动**（候选稿、标注、指令、回收站都在 `.dsh-novel-studio/` 下）；但插件名变了、配置键也变了——旧的 `cordis.patch.yml` 里若有 `id/name: dsh-novel-studio` 的配置行，把那两行改成新名就能保住原来的设置（projectDir 之类）。
 
 顺带：npm 上 `dsh-novel-workbench` 已确认没有占位（registry 返回 404）。
 

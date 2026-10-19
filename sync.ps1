@@ -17,7 +17,7 @@ Write-Host "源: $src"
 Write-Host "目标: $dst"
 
 if (-not (Test-Path $dst)) {
-  Write-Error "没找到安装位置。先运行：dsh plugin add github:ShanJun-pro-max/dsh-novel-studio"
+  Write-Error "没找到安装位置。先运行：dsh plugin add github:ShanJun-pro-max/dsh-novel-workbench"
   exit 1
 }
 

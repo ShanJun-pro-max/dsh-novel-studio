@@ -33,7 +33,7 @@
 ### 1. 装包
 
 ```bash
-dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
+dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-workbench
 ```
 
 **`--profile web` 必须写在 `add` 前面。** 新版 dsh 把 `--profile` 定为必填项，而且它属于 `plugin` 这一层——写成 `dsh plugin add --profile web …` 会报：
@@ -67,8 +67,8 @@ node ./node_modules/dsh-novel-workbench/install.mjs web
 本地开发：
 
 ```bash
-dsh plugin --profile web add file:/path/to/dsh-novel-studio
-node /path/to/dsh-novel-studio/install.mjs web
+dsh plugin --profile web add file:/path/to/dsh-novel-workbench
+node /path/to/dsh-novel-workbench/install.mjs web
 ```
 
 ---
@@ -105,7 +105,7 @@ dsh plugin --profile web update dsh-novel-workbench
 从源码装的（`file:` 方式）更新更简单：
 
 ```bash
-cd /path/to/dsh-novel-studio
+cd /path/to/dsh-novel-workbench
 git pull
 ```
 

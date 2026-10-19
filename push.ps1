@@ -17,7 +17,7 @@ $msg = if ($Message -and $Message.Count -gt 0) { $Message -join ' ' } else { 'up
 $hasRemote = (git remote 2>$null) -contains 'origin'
 if (-not $hasRemote) {
   Write-Host "还没有设置 remote，先执行：" -ForegroundColor Yellow
-  Write-Host "  git remote add origin https://github.com/ShanJun-pro-max/dsh-novel-studio.git"
+  Write-Host "  git remote add origin https://github.com/ShanJun-pro-max/dsh-novel-workbench.git"
   Write-Host "  git push -u origin main"
   exit 1
 }

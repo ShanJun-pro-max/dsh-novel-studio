@@ -63,10 +63,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ShanJun-pro-max/dsh-novel-studio.git"
+    "url": "git+https://github.com/ShanJun-pro-max/dsh-novel-workbench.git"
   },
-  "homepage": "https://github.com/ShanJun-pro-max/dsh-novel-studio#readme",
+  "homepage": "https://github.com/ShanJun-pro-max/dsh-novel-workbench#readme",
   "bugs": {
-    "url": "https://github.com/ShanJun-pro-max/dsh-novel-studio/issues"
+    "url": "https://github.com/ShanJun-pro-max/dsh-novel-workbench/issues"
   }
 }

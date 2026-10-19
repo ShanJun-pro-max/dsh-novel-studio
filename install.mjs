@@ -44,7 +44,7 @@ if (deps[NAME] === undefined) {
       NAME +
       '。先跑：\n  dsh plugin --profile ' +
       profile +
-      ' add github:ShanJun-pro-max/dsh-novel-studio\n再执行本脚本。',
+      ' add github:ShanJun-pro-max/dsh-novel-workbench\n再执行本脚本。',
   )
 }
 
