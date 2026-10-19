@@ -10,6 +10,40 @@
 
 ---
 
+## [2.15.6] - 2026-10-19
+
+### 修复
+
+**`<details>` 展开后收不回去**
+
+上一版把 CSS 写成了 `<details>` 的第一个子元素：
+
+```jsx
+<details className="ns-verdicts">
+  <style>...</style>        ← 抢了 summary 的位置
+  <summary>展开…</summary>
+  <div>列表</div>
+</details>
+```
+
+**HTML 规范要求 `<summary>` 必须是 `<details>` 的第一个子元素**，否则浏览器不把它当折叠标题，整个开合机制就失效了——表现就是「点得开、收不回」。
+
+改成用 `Fragment` 包一层，把 `<style>` 挪到 `<details>` 外面：
+
+```jsx
+<>
+  <style>...</style>
+  <details className="ns-verdicts">
+    <summary>展开…</summary>     ← 又回到第一个子元素
+    <div>列表</div>
+  </details>
+</>
+```
+
+顺带把 CSS 选择器从 `.ns-verdicts summary` 改成 `.ns-verdicts>summary`（直接子元素），避免深层误匹配；`summary` 加 `display: block`，让它整行都可点。
+
+---
+
 ## [2.15.5] - 2026-10-19
 
 ### 修复
