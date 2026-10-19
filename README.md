@@ -44,8 +44,6 @@ dsh plugin --profile web add dsh-novel-workbench
 dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-workbench
 ```
 
-> ⚠️ 别写成 `dsh-novel-studio` —— 那个包名在 npm 上属于**别人的插件**。
-
 **`--profile web` 必须写在 `add` 前面。** 新版 dsh 把 `--profile` 定为必填项，而且它属于 `plugin` 这一层——写成 `dsh plugin add --profile web …` 会报：
 
 ```
