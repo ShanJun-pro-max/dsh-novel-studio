@@ -10,6 +10,53 @@
 
 ---
 
+## [2.15.5] - 2026-10-19
+
+### 修复
+
+**判定理由「只能开、不能收，按钮也不变绿」**
+
+用 `useState` 控制展开状态，但 `LearnPanel` 每次父组件重渲染都会重新执行函数体。虽然组件引用是稳定的，但点击后触发的重渲染把状态绕了一圈，实际表现就是：
+
+- 点一次 → 展开了
+- 再点 → 没有收起
+- 颜色 → 始终是初始的灰色
+
+试过 `useRef` + `forceTick` 也不行——重挂时 ref 同样重置。
+
+**改成原生 `<details>` / `<summary>`**，开合完全交给浏览器，不经过 React 状态：
+
+```jsx
+<details className="ns-verdicts">
+  <summary>展开　49 块的判定理由</summary>
+  <div>...列表...</div>
+</details>
+```
+
+颜色靠 CSS 的 `[open]` 属性选择器（内联样式表达不了选择器，所以注入一段 style）：
+
+```css
+.ns-verdicts summary::before{content:"▸\00a0\00a0";}
+.ns-verdicts[open] summary::before{content:"▾\00a0\00a0";}
+.ns-verdicts[open] summary{
+  background: rgba(52,199,89,0.14);
+  border-color: #34c759;
+  color: #34c759;
+  font-weight: 600;
+}
+```
+
+现在：
+
+| 状态 | 表现 |
+| --- | --- |
+| 收起（默认） | `▸ 展开　49 块的判定理由` 白底灰边 |
+| 展开 | `▾ 展开　49 块的判定理由` **绿底绿边绿字加粗** |
+
+点一次展开、点一次收起，箭头和颜色都跟着变。
+
+---
+
 ## [2.15.4] - 2026-10-19
 
 ### 改进
