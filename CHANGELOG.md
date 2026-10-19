@@ -10,6 +10,41 @@
 
 ---
 
+## [2.21.3] - 2026-10-19
+
+### 修复
+
+**别人装不上：README 里的命令少写了 `--profile`**
+
+有人照 README 敲：
+
+```bash
+dsh plugin add github:ShanJun-pro-max/dsh-novel-studio
+# error: required option '--profile <name>' not specified
+```
+
+新版 dsh 把 `--profile` 定为必填，而且它属于 `plugin` 这一层——`add` 后面的一切都会原样转给 pnpm，dsh 自己读不到。正确写法（`dsh plugin --help` 的示例也是这个顺序）：
+
+```bash
+dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
+```
+
+README 四处命令全部改正，并补进「常见问题」。
+
+**装完包，界面里却什么都没有**
+
+`dsh plugin add` 只把包装进 profile 的 `node_modules`；插件自带的 `cordis.patch.yml`（往 UI 插侧栏入口的那一层）要等包名出现在 profile `package.json` 的 **`dsh.profile.bundles`** 里才会被应用。这一步以前只在我自己机器上做过，别人的 profile 里是空的。
+
+新增 `install.mjs`：把包名写进 `dsh.profile.bundles`，可重复执行（已存在就跳过），并先检查包是否真的装了。
+
+```bash
+node ./node_modules/dsh-novel-studio/install.mjs web
+```
+
+README 的安装改成「装包 → 挂进组合 → 重启」三步。
+
+---
+
 ## [2.21.2] - 2026-10-19
 
 ### 修复

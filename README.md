@@ -28,19 +28,48 @@
 
 ## 安装
 
-```bash
-dsh plugin add github:ShanJun-pro-max/dsh-novel-studio
-```
+**两步都要做**：先装包，再把它挂进 profile 的组合层。只做第一步，包装好了但界面里什么都没有。
 
-或者本地开发：
+### 1. 装包
 
 ```bash
-dsh plugin add file:/path/to/dsh-novel-studio
+dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
 ```
 
-装完**重启 dsh web**，侧栏底部出现「📚 小说工坊」。
+**`--profile web` 必须写在 `add` 前面。** 新版 dsh 把 `--profile` 定为必填项，而且它属于 `plugin` 这一层——写成 `dsh plugin add --profile web …` 会报：
 
-**怎么知道装成功了**：打开工作台，看左侧导航最底部有没有版本号（当前 `v2.5.0`）。
+```
+error: required option '--profile <name>' not specified
+```
+
+因为 `add` 之后的内容会原样转给 pnpm，dsh 自己没读到 `--profile`。
+
+profile 名怎么选：用 `dsh web` 就是 `web`；用桌面版客户端就是 `desktop`。不确定就看 `~/.dsh/profiles/` 下有哪些目录。
+
+### 2. 挂进组合
+
+```bash
+node ./node_modules/dsh-novel-studio/install.mjs web
+```
+
+脚本只做一件事：把 `dsh-novel-studio` 写进 `~/.dsh/profiles/web/package.json` 的 `dsh.profile.bundles`。手动做也行——在那个文件里找到：
+
+```json
+"dsh": { "profile": { "bundles": [ "...", "这里加一行 dsh-novel-studio" ] } }
+```
+
+（这一步别省。`dsh plugin add` 只把包装进 `node_modules`，组合层是独立的另一份配置，插件自带的 `cordis.patch.yml` 靠它才会被应用。）
+
+### 3. 重启
+
+**重启 dsh web**，侧栏底部出现「📚 小说工坊」，点开看左侧导航最底部的版本号（最新是 `v2.21.2`）。
+
+本地开发：
+
+```bash
+dsh plugin --profile web add file:/path/to/dsh-novel-studio
+node /path/to/dsh-novel-studio/install.mjs web
+```
 
 ---
 
@@ -48,19 +77,19 @@ dsh plugin add file:/path/to/dsh-novel-studio
 
 ```bash
 # 1. 重新装一次，会拉最新代码
-dsh plugin add github:ShanJun-pro-max/dsh-novel-studio
+dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
 
 # 2. 重启 dsh web
 ```
 
-开工作台看左下角版本号有没有变。
+开工作台看左下角版本号有没有变。（`dsh.profile.bundles` 里的那一行只需加一次，更新时不用再动。）
 
 **版本号没变？** 说明命中了旧的依赖缓存。删掉再装：
 
 ```bash
 # Windows
 rmdir /s /q "%USERPROFILE%\.dsh\profiles\web\node_modules\dsh-novel-studio"
-dsh plugin add github:ShanJun-pro-max/dsh-novel-studio
+dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
 ```
 
 从源码装的（`file:` 方式）更新更简单：
@@ -229,6 +258,10 @@ paid: []
 **入口没出现？**
 重启 dsh web。还不行就 `Ctrl + F5` 硬刷新（浏览器会缓存旧 bundle）。
 
+**装的时候报 `error: required option '--profile <name>' not specified`？**
+把 `--profile web` 挪到 `add` 前面：`dsh plugin --profile web add github:…`。
+`--profile` 属于 `plugin` 这一层，写在 `add` 之后会被当成要转给 pnpm 的参数，dsh 自己读不到。
+
 **「这个 dsh 没挂 LLM 服务」？**
 开新章、生成总结、识别别称这些要调模型。在设置里指定模型，或确认 dsh 已有默认模型。
 
@@ -248,7 +281,7 @@ paid: []
 npm run check
 
 # 装到本地 profile
-dsh plugin add file:$(pwd)
+dsh plugin --profile web add file:$(pwd)
 ```
 
 结构：
@@ -258,7 +291,7 @@ lib/
 ├─ index.js            插件入口（注册唯一 RPC 端点 /novel-studio/api/）
 ├─ client.js           前端（宿主只加载这一个文件，不能拆）
 ├─ server/
-│  ├─ api.js           55 个业务接口
+│  ├─ api.js           74 个业务接口
 │  ├─ context.js       路径约定、项目识别、配置读写
 │  ├─ summary.js       总结提示词、头部解析、输出清洗
 │  ├─ distill.js       提炼规律
