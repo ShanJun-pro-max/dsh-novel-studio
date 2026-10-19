@@ -268,6 +268,21 @@ paid: []
 把 `--profile web` 挪到 `add` 前面：`dsh plugin --profile web add github:…`。
 `--profile` 属于 `plugin` 这一层，写在 `add` 之后会被当成要转给 pnpm 的参数，dsh 自己读不到。
 
+**装/更新时报 `ERR_PNPM_GIT_RESOLVE_FAILED`、`Connection was reset`？**
+这一步是 pnpm 在跑 `git ls-remote` 解析仓库，和插件本身无关——机器连不上 github.com。三选一：
+
+```bash
+# 1) 先开代理（最常见）
+# 2) 只给 git 配代理，端口换成你自己的
+git config --global http.https://github.com.proxy http://127.0.0.1:7890
+
+# 3) 有 SSH key 的话走 SSH 传输（pnpm 输出里推荐的那条）
+git config --global url."git@github.com:".insteadOf "https://github.com/"
+```
+
+同一屏里那句 `git-hosted plugins build on install via their prepare script` 是 dsh 的通用提示，
+这个包没有 `prepare` 脚本，忽略即可。
+
 **「这个 dsh 没挂 LLM 服务」？**
 开新章、生成总结、识别别称这些要调模型。在设置里指定模型，或确认 dsh 已有默认模型。
 
