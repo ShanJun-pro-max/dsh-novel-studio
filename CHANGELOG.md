@@ -10,6 +10,22 @@
 
 ---
 
+## [3.0.2] - 2026-10-20
+
+### 修复
+
+**改名漏了一处：客户端模块的 loader id，导致整个 web 起不来**
+
+症状：进 DSH 首页就是 `Failed to load plugins / dsh-novel-workbench / web boot: 1 entry did not activate / import failed`，只有把插件删掉才能进界面。
+
+根因：v3.0.0 把包名、`cordis.patch.yml` 的 id、`lib/index.js` 的 name 都改成了 `dsh-novel-workbench`，唯独 `lib/client.js` 里 `window.__ModuleLoader__.load({ id: ... })` 还是 `dsh-novel-studio`。宿主按 `dsh-novel-workbench` 去激活客户端条目，找不到同名注册 → 判为「entry 没激活」→ 整个启动失败。`node --check` 查不出这种错，因为它语法完全合法。
+
+修完 id 一致，另外加了两道防线：
+
+- 新增 `check.mjs`：逐项比对 package.json 的 name、`lib/index.js` 的 name、`lib/client.js` 的 loader id、`cordis.patch.yml` 的 id/name、`install.mjs` 的 NAME、`dsh.bundle.patch` 是否存在、`files` 是否包含 `lib/` 与 `cordis.patch.yml`、CHANGELOG 里有没有当前版本号。
+- `push.ps1` 在语法检查之后自动跑它，不一致直接中止推送——这类「改名只改一半」的错误不会再发出去。
+
+---
 ## [3.0.1] - 2026-10-20
 
 ### 调整

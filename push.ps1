@@ -33,6 +33,16 @@ foreach ($f in @('lib/index.js', 'lib/client.js', 'lib/server/api.js', 'lib/serv
 }
 Write-Host "语法通过" -ForegroundColor Green
 
+# 一致性体检：包名 / 插件名 / loader id / 组合层 id / 打包清单必须对得上。
+# 上次改名漏了 client.js 的 loader id，宿主就报「1 entry did not activate → import failed」，
+# 整个 web 起不来，而 node --check 看不出来。
+Write-Host "一致性体检…"
+node check.mjs
+if ($LASTEXITCODE -ne 0) {
+  Write-Error "一致性体检没过 —— 已中止推送（详见上面的 ✗ 行）"
+  exit 1
+}
+
 git add -A
 $status = git status --porcelain
 if (-not $status) {
