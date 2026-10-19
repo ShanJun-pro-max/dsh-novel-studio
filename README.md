@@ -1,4 +1,4 @@
-# 小说工坊 · dsh-novel-studio
+# 小说工坊 · dsh-novel-workbench
 
 给 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 用的一页式小说创作工作台。
 
@@ -49,13 +49,13 @@ profile 名怎么选：用 `dsh web` 就是 `web`；用桌面版客户端就是 
 ### 2. 挂进组合
 
 ```bash
-node ./node_modules/dsh-novel-studio/install.mjs web
+node ./node_modules/dsh-novel-workbench/install.mjs web
 ```
 
-脚本只做一件事：把 `dsh-novel-studio` 写进 `~/.dsh/profiles/web/package.json` 的 `dsh.profile.bundles`。手动做也行——在那个文件里找到：
+脚本只做一件事：把 `dsh-novel-workbench` 写进 `~/.dsh/profiles/web/package.json` 的 `dsh.profile.bundles`。手动做也行——在那个文件里找到：
 
 ```json
-"dsh": { "profile": { "bundles": [ "...", "这里加一行 dsh-novel-studio" ] } }
+"dsh": { "profile": { "bundles": [ "...", "这里加一行 dsh-novel-workbench" ] } }
 ```
 
 （这一步别省。`dsh plugin add` 只把包装进 `node_modules`，组合层是独立的另一份配置，插件自带的 `cordis.patch.yml` 靠它才会被应用。）
@@ -77,7 +77,7 @@ node /path/to/dsh-novel-studio/install.mjs web
 
 ```bash
 # 1. 让它重新解析仓库的最新提交
-dsh plugin --profile web update dsh-novel-studio
+dsh plugin --profile web update dsh-novel-workbench
 
 # 2. 重启 dsh web
 ```
@@ -98,8 +98,8 @@ dsh plugin --profile web update dsh-novel-studio
 
 ```bash
 # Windows
-rmdir /s /q "%USERPROFILE%\.dsh\profiles\web\node_modules\dsh-novel-studio"
-dsh plugin --profile web update dsh-novel-studio
+rmdir /s /q "%USERPROFILE%\.dsh\profiles\web\node_modules\dsh-novel-workbench"
+dsh plugin --profile web update dsh-novel-workbench
 ```
 
 从源码装的（`file:` 方式）更新更简单：

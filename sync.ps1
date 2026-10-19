@@ -11,7 +11,7 @@
 $ErrorActionPreference = 'Stop'
 
 $src = $PSScriptRoot
-$dst = Join-Path $env:USERPROFILE '.dsh\profiles\web\node_modules\dsh-novel-studio'
+$dst = Join-Path $env:USERPROFILE '.dsh\profiles\web\node_modules\dsh-novel-workbench'
 
 Write-Host "源: $src"
 Write-Host "目标: $dst"

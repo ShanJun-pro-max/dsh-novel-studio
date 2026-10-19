@@ -1,5 +1,5 @@
 /**
- * dsh-novel-studio 安装助手：把本插件挂进 dsh 的 profile 组合。
+ * dsh-novel-workbench 安装助手：把本插件挂进 dsh 的 profile 组合。
  *
  * 为什么需要它：`dsh plugin add` 只是把包装进 profile 的 node_modules，
  * 组合层要另一步——把包名写进 profile package.json 的 `dsh.profile.bundles`，
@@ -15,7 +15,7 @@ import { existsSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
-const NAME = 'dsh-novel-studio'
+const NAME = 'dsh-novel-workbench'
 const profile = String(process.argv[2] || 'web').replace(/^--profile=/, '')
 const home = process.env.DSH_HOME || join(homedir(), '.dsh')
 const file = join(home, 'profiles', profile, 'package.json')
