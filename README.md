@@ -76,13 +76,17 @@ node /path/to/dsh-novel-studio/install.mjs web
 ## 更新
 
 ```bash
-# 1. 重新装一次，会拉最新代码
-dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
+# 1. 让它重新解析仓库的最新提交
+dsh plugin --profile web update dsh-novel-studio
 
 # 2. 重启 dsh web
 ```
 
 开工作台看左下角版本号有没有变。（`dsh.profile.bundles` 里的那一行只需加一次，更新时不用再动。）
+
+> ⚠️ **重复执行 `add` 是没用的。** 对 `github:` 来源，pnpm 会把解析到的**提交**写进 `pnpm-lock.yaml`；
+> 第二次 `add` 看到 spec 没变，会说 `Lockfile is up to date, resolution step is skipped` /
+> `Already up to date`，然后原样跳过——包还是旧的。必须用 `update` 才会重新解析。
 
 ### 装了插件市场的话
 
@@ -90,12 +94,12 @@ dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
 
 所以发版时务必改版本号（本项目用 `version.ps1`）；只推提交不改版本号的话，市场只会标一句「有新提交（未发版）」而不给更新按钮 —— 这是市场的规则，不是插件的问题。
 
-**版本号没变？** 说明命中了旧的依赖缓存。删掉再装：
+**还是旧版本？** 先把依赖清掉再装：
 
 ```bash
 # Windows
 rmdir /s /q "%USERPROFILE%\.dsh\profiles\web\node_modules\dsh-novel-studio"
-dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-studio
+dsh plugin --profile web update dsh-novel-studio
 ```
 
 从源码装的（`file:` 方式）更新更简单：
