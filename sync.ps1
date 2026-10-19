@@ -36,4 +36,14 @@ foreach ($item in $items) {
 }
 
 Write-Host ""
+# 同步完就地体检：身份一致、每个模块能加载、客户端 bundle 能激活
+Write-Host "体检安装副本…"
+node "$PSScriptRoot\doctor.mjs" $dst
+if ($LASTEXITCODE -ne 0) {
+  Write-Host ""
+  Write-Host "体检没过 —— 别急着重启，先看上面的 ✗" -ForegroundColor Red
+  exit 1
+}
+
+Write-Host ""
 Write-Host "完成。重启 dsh web 后生效。" -ForegroundColor Green
