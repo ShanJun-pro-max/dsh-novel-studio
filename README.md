@@ -32,9 +32,19 @@
 
 ### 1. 装包
 
+**推荐走 npm**（不碰 GitHub，国内配个镜像就能装）：
+
+```bash
+dsh plugin --profile web add dsh-novel-workbench
+```
+
+连不上 npm、或者想跟最新提交走，就改用 GitHub 源（装出来是同一个包）：
+
 ```bash
 dsh plugin --profile web add github:ShanJun-pro-max/dsh-novel-workbench
 ```
+
+> ⚠️ 别写成 `dsh-novel-studio` —— 那个包名在 npm 上属于**别人的插件**。
 
 **`--profile web` 必须写在 `add` 前面。** 新版 dsh 把 `--profile` 定为必填项，而且它属于 `plugin` 这一层——写成 `dsh plugin add --profile web …` 会报：
 
@@ -76,7 +86,7 @@ node /path/to/dsh-novel-workbench/install.mjs web
 ## 更新
 
 ```bash
-# 1. 让它重新解析仓库的最新提交
+# 1. 让它重新解析到最新版（npm 装的就拉最新版本，github 装的就拉最新提交）
 dsh plugin --profile web update dsh-novel-workbench
 
 # 2. 重启 dsh web

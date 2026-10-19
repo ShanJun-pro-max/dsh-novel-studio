@@ -10,6 +10,17 @@
 
 ---
 
+## [3.0.1] - 2026-10-20
+
+### 调整
+
+**安装说明改成 npm 优先，并顺延版本号**
+
+- README 的「装包」现在先给 npm：`dsh plugin --profile web add dsh-novel-workbench`，GitHub 源作为备选（连不上 npm 或想跟最新提交时用）。
+- 顺手加了一句警告：**别写成 `dsh-novel-studio`**，那个包名在 npm 上属于别人的插件。
+- 版本号从 3.0.0 顺延到 3.0.1：npm 在 3.0.0 那次发布时把版本号「占住」了（暂存流程），再发同一个号会被 `You cannot publish over the previously published versions` 顶回来。换号即解决。
+
+---
 ## [3.0.0] - 2026-10-20
 
 ### 改名
