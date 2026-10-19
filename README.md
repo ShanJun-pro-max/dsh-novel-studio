@@ -70,14 +70,23 @@ node ./node_modules/dsh-novel-workbench/install.mjs web
 
 ### 3. 重启
 
-**重启 dsh web**，侧栏底部出现「📚 小说工坊」，点开看左侧导航最底部的版本号（最新是 `v2.21.2`）。
+**重启 dsh web**，侧栏底部出现「📚 小说工坊」，点开看左侧导航最底部的版本号（最新是 `v3.0.5`）。
 
 本地开发：
 
 ```bash
-dsh plugin --profile web add file:/path/to/dsh-novel-workbench
-node /path/to/dsh-novel-workbench/install.mjs web
+# 改完代码，一条命令走完：体检 → 发 npm → 让 pnpm 拉最新 → 体检安装副本 → 接口冒烟
+.\sync.ps1 -Publish
+
+# 只拉最新、不发版
+.\sync.ps1
 ```
+
+> ⚠️ **别手动把仓库文件抄进 `~/.dsh/profiles/web/node_modules/dsh-novel-workbench`。**
+> 那个目录归 pnpm 管，账记在 `node_modules/.modules.yaml` 里（含版本号）。手抄进去的文件
+> 一旦版本号变了，安装目录和 pnpm 的账本就对不上，宿主启动时会报
+> `1 entry did not activate → import failed`，整个 web 起不来——手抄省两分钟，要用一次
+> 「删插件 + 重装」来还。
 
 ---
 

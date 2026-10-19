@@ -10,6 +10,29 @@
 
 ---
 
+## [3.0.5] - 2026-10-20
+
+### 修复
+
+**启动崩溃的真正原因：手抄文件进 pnpm 的安装目录，版本账目对不上**
+
+症状和前两次一样：`Failed to load plugins / web boot: 1 entry did not activate / import failed`，只能删插件才进得去。
+
+根因不在插件代码：`sync.ps1` 早先是把仓库的 `lib/` 直接 `Copy-Item` 进 `~/.dsh/profiles/web/node_modules/dsh-novel-workbench`。那个目录是 pnpm 装的，`node_modules/.modules.yaml` 里记着它的版本（`dsh-novel-workbench@3.0.x`）。手抄进去的文件版本号一旦变化，**安装目录和 pnpm 的账本就对不上**，宿主启动时加载该条目失败。
+
+验证方式：连开两个端口各启一次 —— 手抄过的安装副本必定报 `import failed`；`remove` 后重新 `add`（让 pnpm 自己写）就正常，工作台能打开、版本号正确。
+
+**现在的规矩**：安装目录里的东西只能由 pnpm 写，人不许手抄。`sync.ps1` 重写成五步流水线：
+
+1. `check.mjs` 身份一致性（包名 / 插件名 / client loader id / 组合层 id / 打包清单）
+2. 可选 `npm publish`（`-Publish` 才发）
+3. `dsh plugin --profile web update dsh-novel-workbench` —— 让 pnpm 拉最新
+4. `doctor.mjs` 体检安装副本（含用 node:vm 真跑 client.js 验证激活）
+5. `smoke.mjs` 15 个只读接口冒烟
+
+任一步失败就红字停下，不会让你带着坏状态去重启。
+
+---
 ## [3.0.4] - 2026-10-20
 
 ### 发布
