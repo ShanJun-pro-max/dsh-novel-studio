@@ -10,6 +10,26 @@
 
 ---
 
+## [2.24.2] - 2026-10-19
+
+### 调整（投稿插件市场前的准备）
+
+**peerDependencies 精简成真实依赖**
+
+以前声明了 `@deepseek-ai/cordis`、`@deepseek-ai/schemastery`、`@deepseek-ai/dsh-llm` 三个。核对代码后：
+
+- `@deepseek-ai/cordis` 一行都没 import —— 删掉；
+- `@deepseek-ai/schemastery` 只用于 `lib/index.js` 的配置 schema，宿主提供，标成 `optional`（可选 peer 不会被 pnpm 自动安装，也就不会引发 ERESOLVE）；
+- `@deepseek-ai/dsh-llm` 是动态 import（`lib/core/llm.js`，失败可降级），保持 `optional`。
+
+效果：别人 `dsh plugin add` 时不会再看到 `Issues with peer dependencies found`。
+
+**给仓库加了 `dsh-plugin` topic**（投稿市场的硬要求之一）。
+
+**投稿条目已备好**：`awesome-dsh-plugin` 的 `data/plugins/ShanJun-pro-max__dsh-novel-studio.yml`，分类 `workflow`，中英双描述。仓库创建时间未满 24 小时，等达标后再开 PR。
+
+---
+
 ## [2.24.1] - 2026-10-19
 
 ### 修复

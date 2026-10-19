@@ -1,6 +1,6 @@
 {
   "name": "dsh-novel-studio",
-  "version": "2.24.1",
+  "version": "2.24.2",
   "description": "小说工坊：DSH 的一页式小说创作工作台。章节看板、候选稿抽卡与合稿、三类回收站、全书级偏好档案与类型库、剧情总结索引与别称识别、情节体检。",
   "license": "MIT",
   "author": "",
@@ -37,11 +37,13 @@
     "check": "node --check lib/index.js && node --check lib/client.js && node --check lib/server/api.js"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "*",
-    "@deepseek-ai/schemastery": "*",
+    "@deepseek-ai/schemastery": ">=3.0.0",
     "@deepseek-ai/dsh-llm": "*"
   },
   "peerDependenciesMeta": {
+    "@deepseek-ai/schemastery": {
+      "optional": true
+    },
     "@deepseek-ai/dsh-llm": {
       "optional": true
     }
