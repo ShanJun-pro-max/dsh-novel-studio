@@ -19,6 +19,7 @@
 - README 里那条「别写成 `dsh-novel-studio`」的警告移除。改名已经完成、npm 上也只认新名，留着一句旧名反而让人以为要提防什么。
 - `lib/client.js` 里界面偏好的 localStorage 命名空间由 `dsh-novel-studio` 改为 `dsh-novel-workbench`（只会让工作台记住的页签/缩放重置一次，不涉及任何创作数据）。
 - `lib/core/annotate.js` 头注释里的旧名同步更新。
+- `lib/core/*` 九个模块头注释里的旧名、候选稿合并记录里的「由 ×× 工作台生成」、模型调用的来源标记（`kind: plugin`）一并换成新名。
 
 **有意保留的旧名**：
 
