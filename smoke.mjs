@@ -4,7 +4,7 @@
  */
 import { pathToFileURL } from 'node:url'
 
-const ROOT = 'file:///C:/Users/18708/.dsh/profiles/web/node_modules/dsh-novel-workbench/'
+const ROOT = new URL('.', import.meta.url).href
 const { createContext } = await import(ROOT + 'lib/server/context.js')
 const { createApi } = await import(ROOT + 'lib/server/api.js')
 
@@ -25,6 +25,7 @@ const calls = [
   ['summary.headsMissing', {}],
   ['consistency.check', { deep: false }],
   ['newchapter.status', { chapter: 12 }],
+  ['newchapter.brief', { chapter: 13 }],
   ['setup.get', { chapter: 12 }],
   ['pack.preview', { chapter: 12 }],
 ]

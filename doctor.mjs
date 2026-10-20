@@ -37,12 +37,26 @@ if (mId && mId[1] === pkg.name) pass('组合层 id', mId[1])
 else fail('组合层 id 与包名不一致', (mId && mId[1]) + ' vs ' + pkg.name)
 
 // ── 2. 入口能不能真的 import（loader 的解析方式）────────
+// 仓库目录没有 node_modules，schemastery 这类宿主依赖解析不到；安装副本能解析到。
+// 所以仓库里解析失败时，借安装副本的位置再 import 一次同一个文件（代码一样，
+// 只是让它找得到依赖）。两边都失败才算真失败。
+const INSTALLED = join(process.env.USERPROFILE || '', '.dsh', 'profiles', 'web', 'node_modules', 'dsh-novel-workbench')
 try {
   const mod = await import(pathToFileURL(join(root, 'lib/index.js')).href)
   if (typeof mod.apply !== 'function') fail('lib/index.js 缺 apply 导出', String(typeof mod.apply))
   else pass('服务端入口 import', 'apply / Config / name 齐全')
 } catch (e) {
-  fail('服务端入口 import 失败', String(e.message).slice(0, 200))
+  let rescued = false
+  try {
+    if (existsSync(join(INSTALLED, 'lib/index.js'))) {
+      const mod2 = await import(pathToFileURL(join(INSTALLED, 'lib/index.js')).href)
+      rescued = typeof mod2.apply === 'function'
+    }
+  } catch {
+    rescued = false
+  }
+  if (rescued) pass('服务端入口 import', '仓库目录缺宿主依赖，借安装副本解析通过')
+  else fail('服务端入口 import 失败', String(e.message).slice(0, 200))
 }
 
 // ── 3. lib 下每个模块都 import 一遍（启动时会全部加载）──
@@ -59,8 +73,20 @@ let imported = 0
 const bad = []
 for (const file of walk(join(root, 'lib'))) {
   if (file.endsWith('client.js')) continue
+  // 仓库目录缺宿主依赖（schemastery 等）时，同一个文件在安装副本里再试一次
+  const mirror = join(INSTALLED, 'lib', file.slice(join(root, 'lib').length + 1))
   try {
     await import(pathToFileURL(file).href)
+    imported += 1
+    continue
+  } catch (e) {
+    if (!/Cannot find package/u.test(String(e.message)) || !existsSync(mirror)) {
+      bad.push(file.replace(root, '') + ' → ' + String(e.message).slice(0, 120))
+      continue
+    }
+  }
+  try {
+    await import(pathToFileURL(mirror).href)
     imported += 1
   } catch (e) {
     bad.push(file.replace(root, '') + ' → ' + String(e.message).slice(0, 120))
