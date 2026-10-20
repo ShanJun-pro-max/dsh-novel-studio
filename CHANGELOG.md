@@ -10,6 +10,34 @@
 
 ---
 
+## [3.1.6] - 2026-10-20
+
+### 修复
+
+**右栏滚不动：弹窗没有确定高度，右栏的高度跟着内容跑**
+
+3.1.5 只给了两栏 `overflowY: auto`，但忘了高度链的起点：弹窗卡片只有 `maxHeight: 100%`，没有确定高度。于是右栏 `height: 100%` / `align-self: stretch` 解析成**内容高度**（第 13 章实测 921px），超出卡片的部分被卡片的 `overflow: hidden` 直接裁掉——右栏的 `scrollHeight` 等于 `clientHeight`，滚轮自然滚不动。
+
+这和 v2.33 那次「指令面板滚不动」是同一个病：**高度链没固定，overflow 就没得滚。**
+
+改法：
+
+- 弹窗卡片给确定高度 `height: min(780px, calc(100vh - 32px))`
+- 主体容器 `flex: 1 1 0` + `minHeight: 0` + `overflow: hidden`
+- 左右两栏去掉 `height: 100%`，改用 `align-self: stretch` + `minHeight: 0` + `overflowY: auto`
+
+实测（浏览器里量的真实尺寸，不是看样式）：
+
+```
+卡片   clientH 638  overflow hidden
+主体   clientH 596  overflow hidden
+右栏   clientH 596  scrollH 921  overflow auto   → scrollTop 能设到 200（上限 325）
+左栏   clientH 596  scrollH 596  overflow auto   → 内容还没超，不需要滚
+```
+
+右栏现在能独立滚到底，左栏内容变长时也各自滚各自的。
+
+---
 ## [3.1.5] - 2026-10-20
 
 ### 改进
