@@ -27,6 +27,8 @@ const calls = [
   ['newchapter.status', { chapter: 12 }],
   ['newchapter.brief', { chapter: 13 }],
 
+  ['learn.list', {}],
+  ['learn.crossList', {}],
   ['setup.get', { chapter: 12 }],
   ['pack.preview', { chapter: 12 }],
 ]
